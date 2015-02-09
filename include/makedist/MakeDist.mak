@@ -4,14 +4,31 @@ MAKEDIST/MAKEDIST.MAK:=$(lastword $(MAKEFILE_LIST))
 USERNAME?=$(shell git config user.name)
 EMAIL?=$(shell git config user.email)
 
+## Name of the archive.
 archivename?=$(shell basename `pwd`)
+
+## Name of the Debian package.
 control.Package?=$(archivename)
+
+## Version of the Debian package.
 control.Version?=1.0.0
+
+## Section of the Debian package.
 control.Section?=user/hidden
+
+## Priority of the Debian package.
 control.Priority?=optional
+
+## Architecture of the Debian package.
 control.Architecture?=all
+
+## Installed size of the Debian package.
 control.Installed-Size?=`du -cks data/ | tail -n 1 | cut -f 1`
+
+## Maintainer of the Debian package.
 control.Maintainer?=$(USERNAME) <$(EMAIL)>
+
+## Description of the Debian package.
 control.Description?=$(error control.Description required)
 
 # File to include from your Makefile like this:
