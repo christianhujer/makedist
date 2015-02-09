@@ -5,6 +5,14 @@ USERNAME?=$(shell git config user.name)
 EMAIL?=$(shell git config user.email)
 
 archivename?=$(shell basename `pwd`)
+control.Package?=$(archivename)
+control.Version?=1.0.0
+control.Section?=user/hidden
+control.Priority?=optional
+control.Architecture?=all
+control.Installed-Size?=`du -cks data/ | tail -n 1 | cut -f 1`
+control.Maintainer?=$(USERNAME) <$(EMAIL)>
+control.Description?=$(error control.Description required)
 
 # File to include from your Makefile like this:
 # -include makedist/MakeDist.mak
@@ -36,7 +44,8 @@ cleanDist:
 
 # TODO More variables.
 control: data/
-	echo "Package: $(archivename)\nVersion: 1.0.0\nSection: user/hidden\nPriority: optional\nArchitecture: all\nInstalled-Size: `du -cks data/ | tail -n 1 | cut -f 1`\nMaintainer: $(USERNAME) <$(EMAIL)>\nDescription: makedist - Reusable make support for creating distribution archives." >$@
+	#echo -n "Package: $(control.Package)\nVersion: $(control.Version)\nSection: $(control.Section)/\nPriority: $(control.Priority)\nArchitecture: $(control.Architecture)\nInstalled-Size: $(control.Installed-Size)\nMaintainer: $(control.Maintainer)\nDescription: $(control.Description)\n" >$@
+	echo -n "$(foreach key,Package Version Section Priority Architecture Installed-Size Maintainer Description,$(key): $(control.$(key))\n)" | sed 's/^ //' >$@
 
 control.tar.gz: control
 	tar czf $@ $^

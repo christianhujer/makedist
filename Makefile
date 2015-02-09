@@ -1,6 +1,8 @@
 ## Installation prefix.
 PREFIX:=/usr/local/
 
+control.Description:=makedist - Reusable make support for creating distribution archives.
+
 ## Installation directory for include files.
 INCDIR=$(PREFIX)/include/
 
