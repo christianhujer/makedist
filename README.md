@@ -21,3 +21,4 @@ reusable make support for creating distribution archives. Currently supports .ta
 
 # TODO / Open Items
 - Support version and tagging according to SemVer
+- Support RPM format.
