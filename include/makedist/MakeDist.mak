@@ -31,7 +31,7 @@ dist/$(archivename).tar dist/$(archivename).zip:
 clean: cleanDist
 
 cleanDist:
-	$(RM) -r dist control data/ data.tar.gz control.gar.gz debian-binary
+	$(RM) -r dist control data/ data.tar.gz control.tar.gz debian-binary
 
 
 # TODO More variables.
@@ -42,7 +42,7 @@ control.tar.gz: control
 	tar czf $@ $^
 
 data.tar.gz: | data/
-	tar czf $@ --transform 's.^\./,/,' -C $< .
+	tar czf $@ --transform 's,^\./,/,' -C data/ .
 
 data/:
 	$(MAKE) PREFIX=data/usr/ install
@@ -50,7 +50,7 @@ data/:
 debian-binary:
 	echo 2.0 >$@
 
-dist/makehelp.deb: debian-binary control.tar.gz data.tar.gz
+dist/$(archivename).deb: debian-binary control.tar.gz data.tar.gz
 	ar -Drc $@ $^
 
 endif
