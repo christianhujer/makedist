@@ -22,6 +22,9 @@ control.Priority?=optional
 ## Architecture of the Debian package.
 control.Architecture?=all
 
+## Architecture of the RPM package.
+alien.rpm.Architecture?=$(if $(filter all,$(control.Architecture)),noarch,$(control.Architecture))
+
 ## Installed size of the Debian package.
 control.Installed-Size?=`du -cks data/ | tail -n 1 | cut -f 1`
 
@@ -36,7 +39,7 @@ control.Description?=$(error control.Description required)
 
 .PHONY: dist
 ## Creates the distribution archives.
-dist: dist/$(archivename).tar.gz dist/$(archivename).tar.bz2 dist/$(archivename).zip dist/$(archivename).deb
+dist: dist/$(archivename).tar.gz dist/$(archivename).tar.bz2 dist/$(archivename).zip dist/$(archivename).deb dist/$(archivename)-$(control.Version)-1.$(alien.rpm.Architecture).rpm
 
 dist/%.tar.gz: dist/%.tar
 
@@ -79,4 +82,6 @@ debian-binary:
 dist/$(archivename).deb: debian-binary control.tar.gz data.tar.gz
 	ar -Drc $@ $^
 
+dist/$(archivename)-$(control.Version)-2.$(alien.rpm.Architecture).rpm: dist/$(archivename).deb
+	cd dist/ ; alien -r --bump=0 $(archivename).deb
 endif
