@@ -1,5 +1,5 @@
 # makedist
-reusable make support for creating distribution archives. Currently supports .tar.gz, .tar.bz2, .zip and .deb.
+reusable make support for creating distribution archives. Currently supports .tar.gz, .tar.bz2, .zip, .deb and .rpm.
 
 ## Requirements / Input
 
@@ -19,6 +19,30 @@ reusable make support for creating distribution archives. Currently supports .ta
 - `control.Installed-Size` defaults to `$(du -cks data/ | tail -n 1 | cut -f 1)`, i.e. the size allocated for the `data/` directory after running `make PREFIX=data/usr/ install`.
 - `control.Maintainer` defaults to `$(git config user.name) <$(git config user.email)>`.
 
+## Usage
+- Provide an `install` target.
+- Define `control.Description`.
+- Include `makedist/MakeDist.mak` in your Makefile.
+
+Example:
+
+~~~~
+PREFIX:=/usr/local/
+INCDIR:=$(PREFIX)/include/
+BINDIR:=$(PREFIX)/bin/
+
+.PHONY: install
+install:
+	install -d $(INCDIR) $(BINDIR)
+	install -m 0644 -t $(INCDIR)/ include/*
+	install -t $(BINDIR)/ bin/*
+
+control.Description:=foo bar - Don't put your foo in my bar.
+control.Version:=1.7.12
+-include makedist/MakeDist.mak
+~~~~
+
+You can now call `make dist` to create distribution archives of your software.
+
 # TODO / Open Items
 - Support version and tagging according to SemVer
-- Support RPM format.
