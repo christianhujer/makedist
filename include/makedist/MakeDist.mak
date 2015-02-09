@@ -1,6 +1,10 @@
 ifeq (,$(MAKEDIST/MAKEDIST.MAK))
 MAKEDIST/MAKEDIST.MAK:=$(lastword $(MAKEFILE_LIST))
 
+# File to include from your Makefile like this:
+# control.Description:=My nice package description.
+# -include makedist/MakeDist.mak
+
 USERNAME?=$(shell git config user.name)
 EMAIL?=$(shell git config user.email)
 
@@ -34,9 +38,6 @@ control.Maintainer?=$(USERNAME) <$(EMAIL)>
 ## Description of the Debian package.
 control.Description?=$(error control.Description required)
 
-# File to include from your Makefile like this:
-# -include makedist/MakeDist.mak
-
 .PHONY: dist
 ## Creates the distribution archives.
 dist: dist/$(archivename).tar.gz dist/$(archivename).tar.bz2 dist/$(archivename).zip dist/$(archivename).deb dist/$(archivename)-$(control.Version)-1.$(alien.rpm.Architecture).rpm
@@ -61,10 +62,7 @@ clean: cleanDist
 cleanDist:
 	$(RM) -r dist control data/ data.tar.gz control.tar.gz debian-binary
 
-
-# TODO More variables.
 control: data/
-	#echo -n "Package: $(control.Package)\nVersion: $(control.Version)\nSection: $(control.Section)/\nPriority: $(control.Priority)\nArchitecture: $(control.Architecture)\nInstalled-Size: $(control.Installed-Size)\nMaintainer: $(control.Maintainer)\nDescription: $(control.Description)\n" >$@
 	echo -n "$(foreach key,Package Version Section Priority Architecture Installed-Size Maintainer Description,$(key): $(control.$(key))\n)" | sed 's/^ //' >$@
 
 control.tar.gz: control
