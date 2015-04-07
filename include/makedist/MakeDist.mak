@@ -1,4 +1,4 @@
-ifeq (,$(MAKEDIST/MAKEDIST.MAK))
+ifeq (undefined,$(origin MAKEDIST/MAKEDIST.MAK))
 MAKEDIST/MAKEDIST.MAK:=$(lastword $(MAKEFILE_LIST))
 
 # File to include from your Makefile like this:
