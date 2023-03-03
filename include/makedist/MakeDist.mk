@@ -3,7 +3,7 @@ MAKEDIST/MAKEDIST.MAK:=$(lastword $(MAKEFILE_LIST))
 
 # File to include from your Makefile like this:
 # control.Description:=My nice package description.
-# -include makedist/MakeDist.mak
+# -include include/makedist/MakeDist.mk
 
 USERNAME?=$(shell git config user.name)
 EMAIL?=$(shell git config user.email)

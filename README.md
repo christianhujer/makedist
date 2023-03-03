@@ -39,7 +39,9 @@ install:
 
 control.Description:=foo bar - Don't put your foo in my bar.
 control.Version:=1.7.12
--include makedist/MakeDist.mak
+.makedist/include/makedist/MakeDist.mk:
+	git clone git@github.com:christianhujer/makedist.git
+-include .makedist/include/makedist/MakeDist.mk
 ~~~~
 
 You can now call `make dist` to create distribution archives of your software.
