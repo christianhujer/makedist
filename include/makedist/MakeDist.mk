@@ -57,7 +57,7 @@ dist/$(archivename).tar dist/$(archivename).zip:
 	git archive -o $@ --prefix $(archivename)/ HEAD .
 
 .PHONY: clean
-clean: cleanDist
+clean:: cleanDist
 
 cleanDist:
 	$(RM) -r dist control data/ data.tar.gz control.tar.gz debian-binary
